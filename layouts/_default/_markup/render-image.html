@@ -1,0 +1,21 @@
+{{- $url := urls.Parse .Destination -}}
+{{- $scheme := $url.Scheme -}}
+{{- $pageDir := .Page.File.Dir | safeURL -}}
+{{- $destination := .Destination  | safeURL -}}
+
+<img src="
+  {{- if eq $scheme "" -}}
+    {{- if strings.HasSuffix $url.Path ".md" -}}
+      {{- relref .Page .Destination | safeURL -}}
+    {{- else -}}
+      {{- path.Join "/" $pageDir $destination -}}
+    {{- end -}}
+  {{- else -}}
+    {{- .Destination | safeURL -}}
+  {{- end -}}"
+  {{- with .Title }} title="{{ . | safeHTML }}"{{- end -}}
+  {{- with .Text }} alt="{{ . | safeHTML }}" width="{{ . | safeHTML }}"
+  {{- end -}}
+/>
+
+{{- /* whitespace stripped here to avoid trailing newline in rendered result caused by file EOL */ -}}
